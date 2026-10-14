@@ -1,71 +1,136 @@
+DOM API Demo
 
+1
 <script src="nn.min.js"></script>
+2
 <script>
+3
   /* global nn */
-  let foregroundColor, backgroundColor
-
+4
+  let fg, bg
+5
+​
+6
   function setup () {
+7
     // pick two random colors
-    foregroundColor = nn.randomColor()
-    backgroundColor = nn.randomColor()
-
-    // change the minimum contrast ratio
-    while (nn.colorContrast(foregroundColor, backgroundColor) < 2.5) {
-      foregroundColor = nn.randomColor()
+8
+    fg = nn.randomColor()
+9
+    bg = nn.randomColor()
+10
+    // ensure WCGA AA conlor contrast
+11
+    while (nn.colorContrast(fg, bg) < 4.5) {
+12
+      fg = nn.randomColor()
+13
     }
-
-    // update the body's content and styles
+14
+    // update body's content and styles
+15
     nn.get('body')
+16
       .content('Hi World Wide Web!')
-      .css({
-        color: foregroundColor,
-        background: backgroundColor,
+17
+      .css({ 
+18
+        color: fg, 
+19
+        background: bg,
+20
         overflow: 'hidden',
+21
         height: '100vh',
+22
         display: 'grid',
+23
         alignItems: 'center',
+24
         justifyContent: 'center',
+25
         fontSize: 72
+26
       })
-
-    // create 35 GIFs
-    nn.times(35, createGif)
+27
+    // run the createGif function 50 times
+28
+    nn.times(100, createGif)
+29
   }
-
+30
+  
+31
   function createGif () {
+32
+    // creat a random x,y position slightly beyond the page
+33
     const x = nn.random(-100, nn.width + 100)
+34
     const y = nn.random(-100, nn.height + 100)
+35
     const r = nn.random(360)
-    const c = nn.toHSL(foregroundColor)
-
-    // replace star.gif with your own GIF filename
+36
+    const c = nn.toHSL(fg)
+37
+    // create an img element for our butterfly gif
+38
     nn.create('img')
+39
       .set('src', 'star.gif')
+40
       .addTo('body')
+41
       .position(x, y)
+42
       .rotate(r)
+43
       .hueRotate(60 - c.h)
+44
       .saturate(c.s / 100)
+45
       .brightness(c.l / 100)
+46
       .css({
+47
         cursor: 'grab',
+48
         userSelect: 'none',
+49
         transition: 'all 1.5s ease-out'
+50
       })
+51
       .on('mouseover', async function () {
+52
         this.scale(3)
+53
         this.css('opacity', 0)
+54
         this.rotate(r - 180)
+55
         await nn.sleep(1500)
+56
         this.remove()
+57
       })
+58
   }
-
+59
+  
+60
   function update () {
+61
     nn.getAll('img').forEach(img => img.remove())
+62
     setup()
+63
   }
-
+64
+  
+65
   nn.on('load', setup)
+66
   nn.on('click', update)
+67
 </script>
