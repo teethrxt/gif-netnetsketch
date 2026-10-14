@@ -16,7 +16,7 @@
 
     // update the body's content and styles
     nn.get('body')
-      .content('Hi World Wide Web!')
+      .content('starz!')
       .css({
         color: foregroundColor,
         background: backgroundColor,
@@ -33,8 +33,8 @@
   }
 
   function createGif () {
-    const x = nn.random(-100, nn.width + 100)
-    const y = nn.random(-100, nn.height + 100)
+    const x = nn.random(-50, nn.width + 50)
+    const y = nn.random(-50, nn.height + 50)
     const r = nn.random(360)
     const c = nn.toHSL(foregroundColor)
 
